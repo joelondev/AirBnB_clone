@@ -17,3 +17,5 @@ json file.
 
 
 ## Authors
+* Jesse Neequaye <neequayejesse@gmail.com>
+* Joelon Johnson <joelonjohnson@gmail.com>
