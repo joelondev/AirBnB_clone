@@ -14,6 +14,9 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
+    classes = ["BaseModel", "User", "State",
+                     "City", "Amenity", "Place", "Review"]
+
     def default(self, line):
         """Catch commands if nothing else matches then."""
         # print("DEF:::", line)
@@ -57,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
         d = json.loads(s)
         if not classname:
             print("** class name missing **")
-        elif classname not in storage.classes():
+        elif classname not in storage.classes:
             print("** class doesn't exist **")
         elif uid is None:
             print("** instance id missing **")
@@ -94,10 +97,10 @@ class HBNBCommand(cmd.Cmd):
         """
         if line == "" or line is None:
             print("** class name missing **")
-        elif line not in storage.classes():
+        elif line not in storage.classes:
             print("** class doesn't exist **")
         else:
-            b = storage.classes()[line]()
+            b = storage.classes[line]()
             b.save()
             print(b.id)
 
@@ -108,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             words = line.split(' ')
-            if words[0] not in storage.classes():
+            if words[0] not in storage.classes:
                 print("** class doesn't exist **")
             elif len(words) < 2:
                 print("** instance id missing **")
@@ -126,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             words = line.split(' ')
-            if words[0] not in storage.classes():
+            if words[0] not in storage.classes:
                 print("** class doesn't exist **")
             elif len(words) < 2:
                 print("** instance id missing **")
@@ -143,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
         """
         if line != "":
             words = line.split(' ')
-            if words[0] not in storage.classes():
+            if words[0] not in storage.classes:
                 print("** class doesn't exist **")
             else:
                 nl = [str(obj) for key, obj in storage.all().items()
@@ -159,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
         words = line.split(' ')
         if not words[0]:
             print("** class name missing **")
-        elif words[0] not in storage.classes():
+        elif words[0] not in storage.classes:
             print("** class doesn't exist **")
         else:
             matches = [
@@ -182,7 +185,7 @@ class HBNBCommand(cmd.Cmd):
         value = match.group(4)
         if not match:
             print("** class name missing **")
-        elif classname not in storage.classes():
+        elif classname not in storage.classes:
             print("** class doesn't exist **")
         elif uid is None:
             print("** instance id missing **")
