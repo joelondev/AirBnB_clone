@@ -1,4 +1,5 @@
-mport json
+#!/usr/bin/python3
+import json
 from datetime import datetime
 from models import *
 
@@ -40,4 +41,3 @@ class FileStorage:
                     FileStorage.__objects[k] = eval(cls)(temp[k])
         except Exception as e:
             pass
-
