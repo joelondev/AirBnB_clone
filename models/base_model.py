@@ -1,51 +1,41 @@
 #!/usr/bin/python3
-"""This script is the base model"""
-
+import datetime
 import uuid
-from datetime import datetime
-from models import storage
-
+import models
 
 class BaseModel:
-
-    """Class from which all other classes will inherit"""
-
+    """The base class for all storage objects in this project"""
     def __init__(self, *args, **kwargs):
-        """Initializes instance attributes
-
-        Args:
-            - *args: list of arguments
-            - **kwargs: dict of key-values arguments
-        """
-
-        if kwargs is not None and kwargs != {}:
-            for key in kwargs:
-                if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[key] = kwargs[key]
+        """initialize class object"""
+        if len(args) > 0:
+            for k in args[0]:
+                setattr(self, k, args[0][k])
         else:
+            self.created_at = datetime.datetime.now()
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            storage.new(self)
-
-    def __str__(self):
-        """Returns official string representation"""
-
-        return "[{}] ({}) {}".\
-            format(type(self).__name__, self.id, self.__dict__)
+        for k in kwargs:
+            print("kwargs: {}: {}".format(k, kwargs[k]))
 
     def save(self):
-        """updates the public instance attribute updated_at"""
+        """method to update self"""
+        self.updated_at = datetime.datetime.now()
+        models.storage.new(self)
+        models.storage.save()
 
-        self.updated_at = datetime.now()
-        storage.save()
+    def __str__(self):
+        """edit string representation"""
+        return "[{}] ({}) {}".format(type(self)
+                                     .__name__, self.id, self.__dict__)
 
+    def to_json(self):
+        """convert to json"""
+        dupe = self.__dict__.copy()
+        dupe["created_at"] = str(dupe["created_at"])
+        if ("updated_at" in dupe):
+            dupe["updated_at"] = str(dupe["updated_at"])
+        dupe["__class__"] = type(self).__name__
+        return dupe
+    
     def to_dict(self):
         """returns a dictionary containing all keys/values of __dict__"""
 
